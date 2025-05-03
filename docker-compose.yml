@@ -14,6 +14,7 @@ services:
       - CORE_CONF_fs_defaultFS=hdfs://namenode:9000
     env_file:
       - ./hadoop.env
+      
   datanode:
     image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
     container_name: datanode
@@ -116,6 +117,31 @@ services:
       - "5432:5432"
     environment: 
       - POSTGRES_PASSWORD=casa1234
+
+  flume:
+    image: my-flume:latest
+    container_name: flume
+    depends_on:
+      - namenode
+      - datanode
+
+    # mount your Flume config and the host “spool” directory
+    volumes:
+      - ./infrastructure/flume/config:/opt/flume/conf
+      - ./raw_dataset/landing:/data/spool
+
+    environment:
+      - FLUME_AGENT=spool2hdfs
+      - FLUME_CLASSPATH=/opt/flume/hadoop_lib/*
+      - FLUME_JAVA_OPTS=-Xms256m -Xmx512m 
+
+    # override the default command to launch the agent:
+    command: >
+      bash /app/bin/flume-ng agent
+      --name spool2hdfs
+      --conf /opt/flume/conf
+      --conf-file /opt/flume/conf/spooldir2hdfs.conf
+      -Dflume.root.logger=INFO,console
 
 volumes:
   hadoop_namenode:
