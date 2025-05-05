@@ -8,20 +8,15 @@
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, sum, avg, count, desc, month, year, dayofweek, when, round, lit
-from pyspark.sql.window import Window
 import pyspark.sql.functions as F
-import matplotlib.pyplot as plt
-import pandas as pd
-import seaborn as sns
 
 # Initialize Spark session
 spark = SparkSession.builder \
     .appName("Customer Shopping Analysis") \
-    .master("local[*]") \
     .getOrCreate()
 
 # Load CSV data
-df = spark.read.csv("/Users/liuyihan/Desktop/customer_shopping_data.csv", header=True, inferSchema=True)
+df = spark.read.csv("hdfs://namenode:9000/user/flume/raw/data/spool/user/flume/raw/data/spool/customer_shopping_data.csv.1746246540086.tmp", header=True, inferSchema=True)
 
 # Data preprocessing
 # 1. Calculate total amount for each transaction
@@ -245,7 +240,7 @@ def main():
     analyze_time_patterns()
 
 
-    print("Batch processing completed. All outputs saved to the output directory.")
+    print("Batch processing completed. All outputs saved to elastic search.")
 
     spark.stop()
 
