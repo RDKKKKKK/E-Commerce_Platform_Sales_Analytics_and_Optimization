@@ -395,8 +395,8 @@ def main():
         # value_counts.to_csv("output/ml_results/data/value_counts.csv", index=False)
         # gender_value.to_csv("output/ml_results/data/gender_value_counts.csv", index=False)
 
-        print("Prediction completed. All outputs saved to elastic search." \
-        "——————————————————————————————————————————————————————————————————————" \
+        print("Prediction completed. All outputs saved to elastic search.\n" \
+        "——————————————————————————————————————————————————————————————————————\n" \
         "Results are visualized by Kibana, please check at: http://168.138.187.230:5601")
         # Close Spark session
         spark.stop()
