@@ -240,7 +240,9 @@ def main():
     analyze_time_patterns()
 
 
-    print("Batch processing completed. All outputs saved to elastic search.")
+    print("Batch processing completed. All outputs saved to elastic search." \
+        "——————————————————————————————————————————————————————————————————————" \
+        "Results are visualized by Kibana, please check at: http://168.138.187.230:5601")
 
     spark.stop()
 
