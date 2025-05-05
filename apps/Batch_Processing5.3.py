@@ -16,7 +16,7 @@ spark = SparkSession.builder \
     .getOrCreate()
 
 # Load CSV data
-df = spark.read.csv("hdfs://namenode:9000/user/flume/raw/data/spool/user/flume/raw/data/spool/customer_shopping_data.csv.1746246540086.tmp", header=True, inferSchema=True)
+df = spark.read.csv("hdfs://namenode:9000/user/flume/raw/data/spool/customer_shopping_data.csv.1746246540086.tmp", header=True, inferSchema=True)
 
 # Data preprocessing
 # 1. Calculate total amount for each transaction
