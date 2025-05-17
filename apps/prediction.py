@@ -31,8 +31,12 @@ def main():
     # Set log level to ERROR to reduce output
     spark.sparkContext.setLogLevel("ERROR")
 
-    # Read CSV data
-    file_path = "hdfs://namenode:9000/user/flume/raw/data/spool/customer_shopping_data.csv.1746246540086.tmp"
+    # Read all files in the directory
+    all_files = spark.sparkContext.wholeTextFiles("hdfs://namenode:9000/user/flume/raw/data/spool/").keys().collect()
+
+    # Filter for csv.tmp files and pick the latest by name
+    file_path = sorted([f for f in all_files if f.endswith(".tmp")])[-1]
+
     print(f"Loading data from path: {file_path}")
 
     try:

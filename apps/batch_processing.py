@@ -15,8 +15,14 @@ spark = SparkSession.builder \
     .appName("Customer Shopping Analysis") \
     .getOrCreate()
 
-# Load CSV data
-df = spark.read.csv("hdfs://namenode:9000/user/flume/raw/data/spool/customer_shopping_data.csv.1746246540086.tmp", header=True, inferSchema=True)
+# Read all files in the directory
+all_files = spark.sparkContext.wholeTextFiles("hdfs://namenode:9000/user/flume/raw/data/spool/").keys().collect()
+
+# Filter for csv.tmp files and pick the latest by name
+latest_file = sorted([f for f in all_files if f.endswith(".tmp")])[-1]
+
+# Read the latest file as DataFrame
+df = spark.read.csv(latest_file, header=True, inferSchema=True)
 
 # Data preprocessing
 # 1. Calculate total amount for each transaction
